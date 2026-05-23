@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>QR Relay Demo</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: sans-serif;
+      background: #0f172a;
+      color: #f1f5f9;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+    .card {
+      background: #1e293b;
+      border-radius: 16px;
+      padding: 32px;
+      width: 380px;
+      text-align: center;
+    }
+    h2 { margin-bottom: 4px; }
+    .sub { color: #64748b; font-size: 13px; margin-bottom: 28px; }
+
+    .bulb {
+      font-size: 64px;
+      margin-bottom: 8px;
+      transition: all 0.4s;
+      filter: grayscale(1) brightness(0.4);
+    }
+    .bulb.on { filter: none; }
+
+    .status { color: #94a3b8; font-size: 14px; margin-bottom: 4px; }
+    .timer {
+      font-size: 48px;
+      font-weight: bold;
+      color: #4ade80;
+      min-height: 58px;
+      margin-bottom: 28px;
+    }
+
+    .btns { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+    button {
+      background: #0ea5e9;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      padding: 16px 8px;
+      font-size: 14px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    button:hover { background: #0284c7; }
+    button.purple { background: #7c3aed; }
+    button.purple:hover { background: #6d28d9; }
+    button.full { grid-column: span 2; }
+
+    .log-label { color: #475569; font-size: 11px; text-align: left; margin-bottom: 4px; }
+    .log {
+      background: #0f172a;
+      border-radius: 8px;
+      padding: 10px;
+      text-align: left;
+      font-family: monospace;
+      font-size: 12px;
+      height: 130px;
+      overflow-y: auto;
+      color: #94a3b8;
+    }
+    .log .ok   { color: #4ade80; }
+    .log .err  { color: #f87171; }
+    .log .info { color: #38bdf8; }
+  </style>
+</head>
+<body>
+<div class="card">
+  <h2>⚡ QR Relay Demo</h2>
+  <p class="sub">Giả lập thanh toán → bật relay</p>
+
+  <div class="bulb" id="bulb">💡</div>
+  <div class="status" id="status">Chờ thanh toán...</div>
+  <div class="timer" id="timer"></div>
+
+  <div class="btns">
+    <button onclick="pay(10000)">10.000đ<br><small>10 phút</small></button>
+    <button onclick="pay(20000)">20.000đ<br><small>20 phút</small></button>
+    <button onclick="pay(30000)">30.000đ<br><small>30 phút</small></button>
+    <button onclick="pay(50000)">50.000đ<br><small>50 phút</small></button>
+    <button class="purple full" onclick="pay(10000)">➕ Nạp thêm 10.000đ (cộng dồn)</button>
+  </div>
+
+  <div class="log-label">📋 LOG</div>
+  <div class="log" id="log"></div>
+</div>
+
+<script>
+  function log(msg, type = "info") {
+    const el = document.getElementById("log");
+    const t  = new Date().toLocaleTimeString("vi-VN");
+    el.innerHTML += `<div class="${type}">[${t}] ${msg}</div>`;
+    el.scrollTop = el.scrollHeight;
+  }
+
+  async function pay(amount) {
+    log(`💰 Giả lập nạp ${amount.toLocaleString()}đ...`);
+    try {
+      const res  = await fetch("/webhook/sepay", {
+        method:  "POST",
+        headers: { "Content-Type": "application/json", "x-api-key": "test_secret_123" },
+        body:    JSON.stringify({ transferAmount: amount }),
+      });
+      const data = await res.json();
+      if (data.ok) {
+        log(`✅ Relay BẬT! Còn ${data.totalLeft} phút`, "ok");
+      } else {
+        log(`❌ ${data.message}`, "err");
+      }
+    } catch {
+      log("❌ Không kết nối được server", "err");
+    }
+  }
+
+  // Cập nhật trạng thái mỗi giây
+  setInterval(async () => {
+    try {
+      const res  = await fetch("/status");
+      const data = await res.json();
+      const bulb   = document.getElementById("bulb");
+      const status = document.getElementById("status");
+      const timer  = document.getElementById("timer");
+
+      if (data.active) {
+        bulb.className = "bulb on";
+        status.textContent = "🟢 Relay đang BẬT";
+        const m = Math.floor(data.secondsLeft / 60);
+        const s = data.secondsLeft % 60;
+        timer.textContent = `${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`;
+      } else {
+        bulb.className = "bulb";
+        status.textContent = "Chờ thanh toán...";
+        timer.textContent  = "";
+      }
+    } catch {}
+  }, 1000);
+</script>
+</body>
+</html>
