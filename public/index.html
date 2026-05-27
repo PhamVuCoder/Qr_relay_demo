@@ -106,16 +106,16 @@
   async function pay(amount) {
     log(`💰 Giả lập nạp ${amount.toLocaleString()}đ...`);
     try {
-      const res  = await fetch("/webhook/sepay", {
+      const res  = await fetch("/webhook/simulate", {
         method:  "POST",
-        headers: { "Content-Type": "application/json", "x-api-key": "test_secret_123" },
+        headers: { "Content-Type": "application/json" },
         body:    JSON.stringify({ transferAmount: amount }),
       });
       const data = await res.json();
       if (data.ok) {
         log(`✅ Relay BẬT! Còn ${data.totalLeft} phút`, "ok");
       } else {
-        log(`❌ ${data.message}`, "err");
+        log(`❌ ${data.message || JSON.stringify(data)}`, "err");
       }
     } catch {
       log("❌ Không kết nối được server", "err");

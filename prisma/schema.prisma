@@ -1,0 +1,74 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model BusinessPoint {
+  id        Int       @id @default(autoincrement())
+  name      String
+  address   String
+  phone     String?
+  code      String    @unique
+  lat       Float?
+  lng       Float?
+  createdAt DateTime  @default(now())
+
+  devices   Device[]
+  qrImages  QRImage[]
+}
+
+model Device {
+  id           Int           @id @default(autoincrement())
+  deviceCode   String        @unique
+  name         String
+  model        String?
+  power        Int?
+  note         String?
+  createdAt    DateTime      @default(now())
+
+  business     BusinessPoint @relation(fields: [businessId], references: [id])
+  businessId   Int
+
+  qrDevices    QRDevice[]
+}
+
+model QRImage {
+  id          Int           @id @default(autoincrement())
+  name        String
+  amount      Int
+  accountName String
+  accountNo   String
+  createdAt   DateTime      @default(now())
+
+  business    BusinessPoint @relation(fields: [businessId], references: [id])
+  businessId  Int
+
+  qrDevices   QRDevice[]
+  transactions Transaction[]
+}
+
+model QRDevice {
+  qr       QRImage @relation(fields: [qrId], references: [id])
+  qrId     Int
+  device   Device  @relation(fields: [deviceId], references: [id])
+  deviceId Int
+
+  @@id([qrId, deviceId])
+}
+
+model Transaction {
+  id          Int      @id @default(autoincrement())
+  amount      Int
+  customerAcct String?
+  devicesOn   Json
+  timeOn      DateTime
+  timeOff     DateTime?
+  createdAt   DateTime @default(now())
+
+  qr          QRImage  @relation(fields: [qrId], references: [id])
+  qrId        Int
+}
