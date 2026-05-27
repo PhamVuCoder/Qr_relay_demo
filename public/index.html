@@ -13,50 +13,91 @@
       justify-content: center;
       align-items: center;
       min-height: 100vh;
+      padding: 20px;
     }
     .card {
       background: #1e293b;
       border-radius: 16px;
-      padding: 32px;
-      width: 380px;
+      padding: 28px;
+      width: 420px;
       text-align: center;
     }
     h2 { margin-bottom: 4px; }
-    .sub { color: #64748b; font-size: 13px; margin-bottom: 28px; }
+    .sub { color: #64748b; font-size: 13px; margin-bottom: 24px; }
 
     .bulb {
-      font-size: 64px;
-      margin-bottom: 8px;
-      transition: all 0.4s;
+      font-size: 56px;
+      margin-bottom: 6px;
       filter: grayscale(1) brightness(0.4);
+      transition: all 0.4s;
     }
     .bulb.on { filter: none; }
-
     .status { color: #94a3b8; font-size: 14px; margin-bottom: 4px; }
     .timer {
-      font-size: 48px;
+      font-size: 44px;
       font-weight: bold;
       color: #4ade80;
-      min-height: 58px;
-      margin-bottom: 28px;
+      min-height: 54px;
+      margin-bottom: 20px;
     }
 
-    .btns { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
-    button {
-      background: #0ea5e9;
-      color: white;
-      border: none;
+    /* Chọn số tiền */
+    .amount-label { color: #94a3b8; font-size: 13px; margin-bottom: 10px; }
+    .amounts { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 20px; }
+    .amt-btn {
+      background: #1e3a5f;
+      color: #f1f5f9;
+      border: 2px solid #334155;
       border-radius: 10px;
-      padding: 16px 8px;
+      padding: 12px 8px;
       font-size: 14px;
       font-weight: bold;
       cursor: pointer;
+      transition: all 0.2s;
     }
-    button:hover { background: #0284c7; }
-    button.purple { background: #7c3aed; }
-    button.purple:hover { background: #6d28d9; }
-    button.full { grid-column: span 2; }
+    .amt-btn:hover { border-color: #38bdf8; color: #38bdf8; }
+    .amt-btn.selected { border-color: #38bdf8; background: #0c2a4a; color: #38bdf8; }
 
+    /* QR */
+    .qr-section {
+      background: #0f172a;
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 20px;
+      display: none;
+    }
+    .qr-section.show { display: block; }
+    .qr-title { font-size: 12px; color: #64748b; margin-bottom: 10px; }
+    .qr-img {
+      width: 200px;
+      height: 200px;
+      border-radius: 8px;
+      margin: 0 auto 10px;
+      display: block;
+      background: white;
+      padding: 4px;
+    }
+    .qr-amount { color: #4ade80; font-size: 20px; font-weight: bold; margin-bottom: 4px; }
+    .qr-note { color: #64748b; font-size: 11px; }
+
+    /* Nút test */
+    .test-section { margin-bottom: 16px; }
+    .test-label { color: #475569; font-size: 11px; margin-bottom: 8px; }
+    .test-btn {
+      background: #7c3aed;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      padding: 12px;
+      font-size: 13px;
+      font-weight: bold;
+      cursor: pointer;
+      width: 100%;
+    }
+    .test-btn:hover { background: #6d28d9; }
+    .test-btn:disabled { background: #334155; color: #64748b; cursor: not-allowed; }
+
+    /* Log */
     .log-label { color: #475569; font-size: 11px; text-align: left; margin-bottom: 4px; }
     .log {
       background: #0f172a;
@@ -65,7 +106,7 @@
       text-align: left;
       font-family: monospace;
       font-size: 12px;
-      height: 130px;
+      height: 110px;
       overflow-y: auto;
       color: #94a3b8;
     }
@@ -77,18 +118,33 @@
 <body>
 <div class="card">
   <h2>⚡ QR Relay Demo</h2>
-  <p class="sub">Giả lập thanh toán → bật relay</p>
+  <p class="sub">Chọn số tiền → quét QR thanh toán → thiết bị tự bật</p>
 
   <div class="bulb" id="bulb">💡</div>
   <div class="status" id="status">Chờ thanh toán...</div>
   <div class="timer" id="timer"></div>
 
-  <div class="btns">
-    <button onclick="pay(10000)">10.000đ<br><small>10 phút</small></button>
-    <button onclick="pay(20000)">20.000đ<br><small>20 phút</small></button>
-    <button onclick="pay(30000)">30.000đ<br><small>30 phút</small></button>
-    <button onclick="pay(50000)">50.000đ<br><small>50 phút</small></button>
-    <button class="purple full" onclick="pay(10000)">➕ Nạp thêm 10.000đ (cộng dồn)</button>
+  <!-- Chọn số tiền -->
+  <div class="amount-label">Chọn thời gian sử dụng:</div>
+  <div class="amounts">
+    <button class="amt-btn" onclick="selectAmount(10000)">10.000đ<br><small>10 phút</small></button>
+    <button class="amt-btn" onclick="selectAmount(20000)">20.000đ<br><small>20 phút</small></button>
+    <button class="amt-btn" onclick="selectAmount(30000)">30.000đ<br><small>30 phút</small></button>
+    <button class="amt-btn" onclick="selectAmount(50000)">50.000đ<br><small>50 phút</small></button>
+  </div>
+
+  <!-- QR Code -->
+  <div class="qr-section" id="qrSection">
+    <div class="qr-title">📱 Quét mã QR để thanh toán</div>
+    <img id="qrImg" class="qr-img" src="" alt="QR Code"/>
+    <div class="qr-amount" id="qrAmount"></div>
+    <div class="qr-note">Chuyển khoản xong thiết bị tự bật — không cần làm gì thêm</div>
+  </div>
+
+  <!-- Nút test giả lập -->
+  <div class="test-section">
+    <div class="test-label">🧪 Hoặc bấm để giả lập thanh toán (test)</div>
+    <button class="test-btn" id="testBtn" onclick="simulate()" disabled>Chọn số tiền trước</button>
   </div>
 
   <div class="log-label">📋 LOG</div>
@@ -96,6 +152,13 @@
 </div>
 
 <script>
+  let selectedAmount = 0;
+
+  // Thông tin tài khoản — lấy từ VietQR
+  const BANK_ID     = "MSB";
+  const ACCOUNT_NO  = "96886693013299";
+  const ACCOUNT_NAME = "PHAM TUAN VU";
+
   function log(msg, type = "info") {
     const el = document.getElementById("log");
     const t  = new Date().toLocaleTimeString("vi-VN");
@@ -103,13 +166,39 @@
     el.scrollTop = el.scrollHeight;
   }
 
-  async function pay(amount) {
-    log(`💰 Giả lập nạp ${amount.toLocaleString()}đ...`);
+  function selectAmount(amount) {
+    selectedAmount = amount;
+
+    // Highlight nút được chọn
+    document.querySelectorAll(".amt-btn").forEach(b => b.classList.remove("selected"));
+    event.target.closest(".amt-btn").classList.add("selected");
+
+    // Tạo QR VietQR
+    const qrUrl = `https://img.vietqr.io/image/${BANK_ID}-${ACCOUNT_NO}-compact2.png`
+      + `?amount=${amount}`
+      + `&addInfo=thanhtoan${amount}`
+      + `&accountName=${encodeURIComponent(ACCOUNT_NAME)}`;
+
+    document.getElementById("qrImg").src = qrUrl;
+    document.getElementById("qrAmount").textContent = amount.toLocaleString("vi-VN") + "đ";
+    document.getElementById("qrSection").classList.add("show");
+
+    // Bật nút test
+    const btn = document.getElementById("testBtn");
+    btn.disabled = false;
+    btn.textContent = `🧪 Giả lập thanh toán ${amount.toLocaleString()}đ`;
+
+    log(`Đã chọn ${amount.toLocaleString()}đ — QR đã hiển thị`);
+  }
+
+  async function simulate() {
+    if (!selectedAmount) return;
+    log(`💰 Giả lập nạp ${selectedAmount.toLocaleString()}đ...`);
     try {
       const res  = await fetch("/webhook/simulate", {
         method:  "POST",
         headers: { "Content-Type": "application/json" },
-        body:    JSON.stringify({ transferAmount: amount }),
+        body:    JSON.stringify({ transferAmount: selectedAmount }),
       });
       const data = await res.json();
       if (data.ok) {
@@ -133,7 +222,7 @@
 
       if (data.active) {
         bulb.className = "bulb on";
-        status.textContent = "🟢 Relay đang BẬT";
+        status.textContent = "🟢 Thiết bị đang chạy";
         const m = Math.floor(data.secondsLeft / 60);
         const s = data.secondsLeft % 60;
         timer.textContent = `${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`;
