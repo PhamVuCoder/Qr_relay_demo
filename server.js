@@ -16,12 +16,24 @@ app.use(express.json());
 app.use(express.static(join(__dirname, "public")));
 
 app.use("/webhook", webhookRouter);
-app.use("/api/businesses", businessRouter); 
+app.use("/api/businesses", businessRouter);
 app.use("/api/devices", deviceRouter);
 app.use("/api/qrimages", qrImageRouter);
-app.get("/status", handleStatus); 
+app.get("/status", handleStatus);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`🚀 Server: http://localhost:${PORT}`);
+}).on("error", (err) => {
+  console.error("❌ Server error:", err);
+});
+
+process.on("uncaughtException", (err) => {
+  console.error("❌ Uncaught Exception:", err.message);
+  console.error(err.stack);
+});
+
+process.on("unhandledRejection", (err) => {
+  console.error("❌ Unhandled Rejection:", err.message);
+  console.error(err.stack);
 });
