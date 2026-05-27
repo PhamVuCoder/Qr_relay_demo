@@ -21,7 +21,7 @@ app.use("/api/devices", deviceRouter);
 app.use("/api/qrimages", qrImageRouter);
 app.get("/status", handleStatus);
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
   console.log(`🚀 Server: http://localhost:${PORT}`);
 }).on("error", (err) => {

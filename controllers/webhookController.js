@@ -21,9 +21,11 @@ function relayControl(turn) {
 }
 
 export function handleWebhook(req, res) {
+  const authHeader = req.headers["authorization"] || "";
+  const token = authHeader.replace("Apikey ", "").trim();
   const secret = process.env.SEPAY_SECRET || "test_secret_123";
 
-  if (req.headers["x-api-key"] !== secret) {
+  if (secret && token !== secret) {
     return res.status(401).json({ error: "Unauthorized" });
   }
 
