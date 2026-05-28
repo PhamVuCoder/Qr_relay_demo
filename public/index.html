@@ -23,8 +23,9 @@
       text-align: center;
     }
     h2 { margin-bottom: 4px; }
-    .sub { color: #64748b; font-size: 13px; margin-bottom: 24px; }
+    .sub { color: #64748b; font-size: 13px; margin-bottom: 20px; }
 
+    /* Trạng thái */
     .bulb {
       font-size: 56px;
       margin-bottom: 6px;
@@ -41,61 +42,56 @@
       margin-bottom: 20px;
     }
 
-    /* Chọn số tiền */
-    .amount-label { color: #94a3b8; font-size: 13px; margin-bottom: 10px; }
-    .amounts { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 20px; }
-    .amt-btn {
-      background: #1e3a5f;
-      color: #f1f5f9;
-      border: 2px solid #334155;
-      border-radius: 10px;
-      padding: 12px 8px;
-      font-size: 14px;
-      font-weight: bold;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-    .amt-btn:hover { border-color: #38bdf8; color: #38bdf8; }
-    .amt-btn.selected { border-color: #38bdf8; background: #0c2a4a; color: #38bdf8; }
-
-    /* QR */
-    .qr-section {
+    /* QR tĩnh */
+    .qr-box {
       background: #0f172a;
       border-radius: 12px;
       padding: 16px;
-      margin-bottom: 20px;
-      display: none;
+      margin-bottom: 16px;
     }
-    .qr-section.show { display: block; }
-    .qr-title { font-size: 12px; color: #64748b; margin-bottom: 10px; }
     .qr-img {
       width: 200px;
       height: 200px;
       border-radius: 8px;
-      margin: 0 auto 10px;
+      margin: 0 auto 12px;
       display: block;
       background: white;
       padding: 4px;
     }
-    .qr-amount { color: #4ade80; font-size: 20px; font-weight: bold; margin-bottom: 4px; }
-    .qr-note { color: #64748b; font-size: 11px; }
+    .qr-bank { font-size: 13px; color: #94a3b8; margin-bottom: 4px; }
+    .qr-acct { font-size: 18px; font-weight: bold; color: #f1f5f9; margin-bottom: 2px; }
+    .qr-name { font-size: 12px; color: #64748b; margin-bottom: 12px; }
 
-    /* Nút test */
-    .test-section { margin-bottom: 16px; }
+    /* Bảng giá */
+    .price-table {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+      margin-bottom: 16px;
+    }
+    .price-row {
+      background: #1e3a5f;
+      border-radius: 8px;
+      padding: 8px;
+      font-size: 13px;
+    }
+    .price-row .amount { color: #38bdf8; font-weight: bold; }
+    .price-row .time   { color: #94a3b8; font-size: 11px; }
+
+    /* Test */
     .test-label { color: #475569; font-size: 11px; margin-bottom: 8px; }
+    .test-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 16px; }
     .test-btn {
       background: #7c3aed;
       color: white;
       border: none;
-      border-radius: 10px;
-      padding: 12px;
-      font-size: 13px;
+      border-radius: 8px;
+      padding: 10px;
+      font-size: 12px;
       font-weight: bold;
       cursor: pointer;
-      width: 100%;
     }
     .test-btn:hover { background: #6d28d9; }
-    .test-btn:disabled { background: #334155; color: #64748b; cursor: not-allowed; }
 
     /* Log */
     .log-label { color: #475569; font-size: 11px; text-align: left; margin-bottom: 4px; }
@@ -118,33 +114,49 @@
 <body>
 <div class="card">
   <h2>⚡ QR Relay Demo</h2>
-  <p class="sub">Chọn số tiền → quét QR thanh toán → thiết bị tự bật</p>
+  <p class="sub">Quét QR → chuyển khoản → thiết bị tự bật</p>
 
   <div class="bulb" id="bulb">💡</div>
   <div class="status" id="status">Chờ thanh toán...</div>
   <div class="timer" id="timer"></div>
 
-  <!-- Chọn số tiền -->
-  <div class="amount-label">Chọn thời gian sử dụng:</div>
-  <div class="amounts">
-    <button class="amt-btn" onclick="selectAmount(10000)">10.000đ<br><small>10 phút</small></button>
-    <button class="amt-btn" onclick="selectAmount(20000)">20.000đ<br><small>20 phút</small></button>
-    <button class="amt-btn" onclick="selectAmount(30000)">30.000đ<br><small>30 phút</small></button>
-    <button class="amt-btn" onclick="selectAmount(50000)">50.000đ<br><small>50 phút</small></button>
+  <!-- QR tĩnh -->
+  <div class="qr-box">
+    <img class="qr-img"
+      src="https://img.vietqr.io/image/MSB-96886693013299-compact2.png?accountName=PHAM%20TUAN%20VU"
+      alt="QR Thanh toán"/>
+    <div class="qr-bank">🏦 MSB</div>
+    <div class="qr-acct">96886693013299</div>
+    <div class="qr-name">PHAM TUAN VU</div>
+
+    <!-- Bảng giá -->
+    <div class="price-table">
+      <div class="price-row">
+        <div class="amount">10.000đ</div>
+        <div class="time">⏱ 10 phút</div>
+      </div>
+      <div class="price-row">
+        <div class="amount">20.000đ</div>
+        <div class="time">⏱ 20 phút</div>
+      </div>
+      <div class="price-row">
+        <div class="amount">30.000đ</div>
+        <div class="time">⏱ 30 phút</div>
+      </div>
+      <div class="price-row">
+        <div class="amount">50.000đ</div>
+        <div class="time">⏱ 50 phút</div>
+      </div>
+    </div>
   </div>
 
-  <!-- QR Code -->
-  <div class="qr-section" id="qrSection">
-    <div class="qr-title">📱 Quét mã QR để thanh toán</div>
-    <img id="qrImg" class="qr-img" src="" alt="QR Code"/>
-    <div class="qr-amount" id="qrAmount"></div>
-    <div class="qr-note">Chuyển khoản xong thiết bị tự bật — không cần làm gì thêm</div>
-  </div>
-
-  <!-- Nút test giả lập -->
-  <div class="test-section">
-    <div class="test-label">🧪 Hoặc bấm để giả lập thanh toán (test)</div>
-    <button class="test-btn" id="testBtn" onclick="simulate()" disabled>Chọn số tiền trước</button>
+  <!-- Test giả lập -->
+  <div class="test-label">🧪 Giả lập thanh toán (chỉ dùng để test)</div>
+  <div class="test-btns">
+    <button class="test-btn" onclick="simulate(10000)">10.000đ</button>
+    <button class="test-btn" onclick="simulate(20000)">20.000đ</button>
+    <button class="test-btn" onclick="simulate(30000)">30.000đ</button>
+    <button class="test-btn" onclick="simulate(50000)">50.000đ</button>
   </div>
 
   <div class="log-label">📋 LOG</div>
@@ -152,13 +164,6 @@
 </div>
 
 <script>
-  let selectedAmount = 0;
-
-  // Thông tin tài khoản — lấy từ VietQR
-  const BANK_ID     = "MSB";
-  const ACCOUNT_NO  = "96886693013299";
-  const ACCOUNT_NAME = "PHAM TUAN VU";
-
   function log(msg, type = "info") {
     const el = document.getElementById("log");
     const t  = new Date().toLocaleTimeString("vi-VN");
@@ -166,39 +171,13 @@
     el.scrollTop = el.scrollHeight;
   }
 
-  function selectAmount(amount) {
-    selectedAmount = amount;
-
-    // Highlight nút được chọn
-    document.querySelectorAll(".amt-btn").forEach(b => b.classList.remove("selected"));
-    event.target.closest(".amt-btn").classList.add("selected");
-
-    // Tạo QR VietQR
-    const qrUrl = `https://img.vietqr.io/image/${BANK_ID}-${ACCOUNT_NO}-compact2.png`
-      + `?amount=${amount}`
-      + `&addInfo=thanhtoan${amount}`
-      + `&accountName=${encodeURIComponent(ACCOUNT_NAME)}`;
-
-    document.getElementById("qrImg").src = qrUrl;
-    document.getElementById("qrAmount").textContent = amount.toLocaleString("vi-VN") + "đ";
-    document.getElementById("qrSection").classList.add("show");
-
-    // Bật nút test
-    const btn = document.getElementById("testBtn");
-    btn.disabled = false;
-    btn.textContent = `🧪 Giả lập thanh toán ${amount.toLocaleString()}đ`;
-
-    log(`Đã chọn ${amount.toLocaleString()}đ — QR đã hiển thị`);
-  }
-
-  async function simulate() {
-    if (!selectedAmount) return;
-    log(`💰 Giả lập nạp ${selectedAmount.toLocaleString()}đ...`);
+  async function simulate(amount) {
+    log(`💰 Giả lập ${amount.toLocaleString()}đ...`);
     try {
       const res  = await fetch("/webhook/simulate", {
         method:  "POST",
         headers: { "Content-Type": "application/json" },
-        body:    JSON.stringify({ transferAmount: selectedAmount }),
+        body:    JSON.stringify({ transferAmount: amount }),
       });
       const data = await res.json();
       if (data.ok) {
@@ -211,7 +190,6 @@
     }
   }
 
-  // Cập nhật trạng thái mỗi giây
   setInterval(async () => {
     try {
       const res  = await fetch("/status");
