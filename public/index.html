@@ -7,206 +7,217 @@
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800;900&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
     :root {
-      --blue:    #0057e7;
-      --blue2:   #0099ff;
-      --yellow:  #ffd600;
-      --red:     #ff3333;
-      --green:   #00c853;
-      --white:   #ffffff;
-      --light:   #e8f4ff;
-      --dark:    #003080;
+      --blue:   #0057e7;
+      --blue2:  #0099ff;
+      --yellow: #ffd600;
+      --green:  #00c853;
+      --white:  #ffffff;
+      --light:  #e8f4ff;
+      --dark:   #003080;
     }
-
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
       font-family: 'Barlow', sans-serif;
-      background: linear-gradient(160deg, #0057e7 0%, #0099ff 100%);
+      background: linear-gradient(135deg, #0041c2 0%, #0099ff 100%);
       min-height: 100vh;
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 20px;
+      padding: 28px 20px;
     }
 
-    .poster {
-      background: white;
-      border-radius: 20px;
-      overflow: hidden;
+    .container {
       width: 100%;
-      max-width: 480px;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+      max-width: 1100px;
+      background: white;
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: 0 24px 80px rgba(0,0,0,0.35);
     }
 
-    /* ===== TOP HEADER ===== */
+    /* ===== TOP BAR ===== */
     .top-bar {
-      background: var(--blue);
-      padding: 10px 16px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-    }
-
-    .top-bar-icon { font-size: 22px; }
-
-    .top-bar-text {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 13px;
-      font-weight: 700;
-      color: white;
-      letter-spacing: 0.5px;
-      text-align: center;
-      line-height: 1.3;
-    }
-
-    /* ===== TITLE ===== */
-    .title-section {
-      background: linear-gradient(135deg, var(--blue) 0%, var(--blue2) 100%);
-      padding: 16px 20px 14px;
-      text-align: center;
-    }
-
-    .main-title {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 36px;
-      font-weight: 900;
-      color: white;
-      letter-spacing: 1px;
-      line-height: 1.1;
-      text-shadow: 0 2px 8px rgba(0,0,0,0.2);
-      margin-bottom: 4px;
-    }
-
-    .sub-title {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 16px;
-      font-weight: 600;
-      color: var(--yellow);
-      letter-spacing: 2px;
-      text-transform: uppercase;
-    }
-
-    /* ===== STATUS ===== */
-    .status-section {
-      background: var(--light);
-      border-bottom: 3px solid var(--blue);
-      padding: 16px 20px;
+      background: var(--dark);
+      padding: 10px 28px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 12px;
     }
-
-    .status-left { flex: 1; }
-
-    .status-label {
-      font-size: 11px;
-      font-weight: 600;
-      color: var(--blue);
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      margin-bottom: 4px;
-    }
-
-    .status-text {
+    .top-bar-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
       font-family: 'Barlow Condensed', sans-serif;
-      font-size: 18px;
+      font-size: 14px;
       font-weight: 700;
-      color: #666;
+      color: white;
+      letter-spacing: 1px;
+    }
+    .top-bar-right {
+      font-size: 12px;
+      color: rgba(255,255,255,0.5);
     }
 
-    .status-text.on { color: var(--green); }
+    /* ===== HEADER ===== */
+    .header {
+      background: linear-gradient(135deg, var(--blue) 0%, var(--blue2) 100%);
+      padding: 20px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+    .header-title { flex: 1; }
+    .main-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 42px;
+      font-weight: 900;
+      color: white;
+      letter-spacing: 2px;
+      line-height: 1;
+      margin-bottom: 4px;
+      text-shadow: 0 2px 12px rgba(0,0,0,0.2);
+    }
+    .sub-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--yellow);
+      letter-spacing: 3px;
+      text-transform: uppercase;
+    }
 
-    .timer-box {
-      background: var(--blue);
-      border-radius: 12px;
-      padding: 10px 18px;
-      text-align: center;
-      min-width: 110px;
+    /* Status in header */
+    .header-status {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .status-pill {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 40px;
+      padding: 8px 16px;
+    }
+    .s-dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.3);
       transition: all 0.4s;
     }
+    .s-dot.on {
+      background: var(--green);
+      box-shadow: 0 0 10px var(--green);
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%,100% { box-shadow: 0 0 6px var(--green); }
+      50% { box-shadow: 0 0 18px var(--green), 0 0 36px rgba(0,200,83,0.4); }
+    }
+    .s-text {
+      font-size: 13px;
+      font-weight: 600;
+      color: white;
+    }
 
-    .timer-box.on { background: var(--green); }
-
+    .timer-pill {
+      background: rgba(0,0,0,0.25);
+      border: 2px solid rgba(255,255,255,0.15);
+      border-radius: 14px;
+      padding: 10px 20px;
+      text-align: center;
+      min-width: 120px;
+      transition: all 0.4s;
+    }
+    .timer-pill.on {
+      background: var(--green);
+      border-color: var(--green);
+    }
     .timer-num {
       font-family: 'Barlow Condensed', sans-serif;
-      font-size: 38px;
+      font-size: 44px;
       font-weight: 900;
       color: white;
       letter-spacing: -1px;
       line-height: 1;
     }
-
-    .timer-label {
+    .timer-sub {
       font-size: 10px;
       font-weight: 600;
-      color: rgba(255,255,255,0.8);
+      color: rgba(255,255,255,0.7);
       text-transform: uppercase;
       letter-spacing: 1px;
     }
 
-    .status-icon {
-      font-size: 36px;
-      filter: grayscale(1) opacity(0.3);
-      transition: all 0.4s;
+    .device-icon {
+      font-size: 52px;
+      filter: brightness(0.4) grayscale(1);
+      transition: all 0.5s;
+    }
+    .device-icon.on {
+      filter: none drop-shadow(0 0 16px rgba(255,220,0,0.8));
+      animation: flicker 1.5s infinite alternate;
+    }
+    @keyframes flicker {
+      from { filter: drop-shadow(0 0 8px rgba(255,220,0,0.6)); }
+      to   { filter: drop-shadow(0 0 24px rgba(255,220,0,1)); }
     }
 
-    .status-icon.on {
-      filter: none;
-      animation: bounce 1s infinite alternate;
+    /* ===== BODY: 2 columns ===== */
+    .body {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
     }
 
-    @keyframes bounce {
-      from { transform: scale(1); }
-      to   { transform: scale(1.1); }
+    /* Left: QR */
+    .col-left {
+      padding: 28px;
+      border-right: 2px solid #f0f0f0;
     }
 
-    /* ===== QR SECTION ===== */
-    .qr-section {
-      padding: 20px;
-      background: white;
-    }
-
-    .qr-section-title {
+    .col-title {
       font-family: 'Barlow Condensed', sans-serif;
       font-size: 20px;
       font-weight: 800;
       color: var(--blue);
-      text-align: center;
       text-transform: uppercase;
       letter-spacing: 1px;
-      margin-bottom: 16px;
-    }
-
-    .qr-main {
-      display: flex;
-      gap: 16px;
-      align-items: stretch;
-      margin-bottom: 16px;
-    }
-
-    .qr-img-wrap {
-      flex-shrink: 0;
-      background: white;
-      border: 3px solid var(--blue);
-      border-radius: 12px;
-      padding: 6px;
-      width: 150px;
-      height: 150px;
+      margin-bottom: 20px;
       display: flex;
       align-items: center;
-      justify-content: center;
+      gap: 8px;
     }
 
-    .qr-img-wrap img {
-      width: 132px;
-      height: 132px;
+    .qr-wrap {
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+      margin-bottom: 20px;
+    }
+
+    .qr-img-box {
+      flex-shrink: 0;
+      background: white;
+      border: 4px solid var(--blue);
+      border-radius: 14px;
+      padding: 8px;
+      width: 170px;
+      height: 170px;
+    }
+    .qr-img-box img {
+      width: 150px;
+      height: 150px;
+      border-radius: 6px;
       display: block;
-      border-radius: 4px;
     }
 
-    .qr-details { flex: 1; }
+    .qr-info { flex: 1; }
 
     .bank-chip {
       display: inline-flex;
@@ -216,305 +227,399 @@
       color: white;
       font-size: 12px;
       font-weight: 700;
-      padding: 4px 10px;
+      padding: 4px 12px;
       border-radius: 20px;
-      margin-bottom: 8px;
-    }
-
-    .acct-number {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 22px;
-      font-weight: 800;
-      color: var(--dark);
-      letter-spacing: 2px;
-      margin-bottom: 2px;
-    }
-
-    .acct-holder {
-      font-size: 12px;
-      font-weight: 600;
-      color: #888;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      margin-bottom: 12px;
-    }
-
-    /* Bảng giá */
-    .price-table { width: 100%; border-collapse: collapse; }
-
-    .price-table tr:first-child td { border-top: none; }
-
-    .price-table td {
-      padding: 5px 8px;
-      border-top: 1px solid #eee;
-      font-size: 13px;
-    }
-
-    .price-table .p-amount {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-weight: 700;
-      font-size: 15px;
-      color: var(--blue);
-      width: 70px;
-    }
-
-    .price-table .p-arrow { color: #bbb; width: 20px; text-align: center; }
-
-    .price-table .p-time {
-      font-weight: 600;
-      color: var(--dark);
-    }
-
-    .price-table .p-tag {
-      text-align: right;
-    }
-
-    .tag {
-      display: inline-block;
-      background: #e8f4ff;
-      color: var(--blue);
-      font-size: 10px;
-      font-weight: 600;
-      padding: 2px 7px;
-      border-radius: 10px;
-    }
-
-    /* Hướng dẫn */
-    .guide-strip {
-      background: var(--yellow);
-      padding: 10px 20px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .guide-icon { font-size: 20px; flex-shrink: 0; }
-
-    .guide-text {
-      font-size: 12px;
-      font-weight: 600;
-      color: var(--dark);
-      line-height: 1.4;
-    }
-
-    /* Test section */
-    .test-section {
-      background: #f8f9fa;
-      border-top: 2px dashed #ddd;
-      padding: 16px 20px;
-    }
-
-    .test-label {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 11px;
-      font-weight: 700;
-      color: #999;
-      text-transform: uppercase;
-      letter-spacing: 1px;
       margin-bottom: 10px;
     }
 
-    .test-label::before,
-    .test-label::after {
-      content: '';
-      flex: 1;
-      height: 1px;
-      background: #ddd;
+    .acct-num {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 26px;
+      font-weight: 800;
+      color: var(--dark);
+      letter-spacing: 2px;
+      line-height: 1.2;
+      margin-bottom: 4px;
     }
 
+    .acct-name {
+      font-size: 12px;
+      font-weight: 600;
+      color: #999;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 16px;
+    }
+
+    .note-box {
+      background: #fffbea;
+      border-left: 4px solid var(--yellow);
+      border-radius: 0 8px 8px 0;
+      padding: 10px 14px;
+      font-size: 12px;
+      color: #666;
+      line-height: 1.6;
+    }
+
+    /* Right: Bảng giá + hướng dẫn */
+    .col-right { padding: 28px; }
+
+    .price-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+    .price-table thead tr {
+      background: var(--blue);
+    }
+    .price-table thead th {
+      padding: 10px 14px;
+      color: white;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      text-align: left;
+    }
+    .price-table thead th:last-child { text-align: center; }
+    .price-table tbody tr {
+      border-bottom: 1px solid #eee;
+      transition: background 0.15s;
+    }
+    .price-table tbody tr:hover { background: var(--light); }
+    .price-table tbody tr.highlight { background: #fff8e1; }
+    .price-table td {
+      padding: 12px 14px;
+      font-size: 14px;
+    }
+    .td-amount {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--blue);
+    }
+    .td-time {
+      font-weight: 600;
+      color: var(--dark);
+    }
+    .td-badge { text-align: center; }
+    .badge {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 20px;
+    }
+    .badge-yellow { background: #fff3cd; color: #856404; }
+    .badge-green  { background: #d1f7e0; color: #0a6b34; }
+
+    /* Hướng dẫn steps */
+    .steps-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--dark);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 12px;
+    }
+    .steps {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    .step {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      background: var(--light);
+      border-radius: 10px;
+      padding: 10px 12px;
+    }
+    .step-num {
+      width: 24px; height: 24px;
+      background: var(--blue);
+      color: white;
+      font-size: 13px;
+      font-weight: 800;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .step-text { font-size: 12px; color: var(--dark); font-weight: 500; line-height: 1.4; }
+
+    /* ===== YELLOW STRIP ===== */
+    .yellow-strip {
+      background: var(--yellow);
+      padding: 12px 28px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-top: 2px solid #f0c000;
+      border-bottom: 2px solid #f0c000;
+    }
+    .yellow-strip-icon { font-size: 22px; }
+    .yellow-strip-text {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--dark);
+      line-height: 1.5;
+    }
+
+    /* ===== TEST + LOG ===== */
+    .bottom {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+      background: #f8f9fa;
+    }
+
+    .test-section {
+      padding: 20px 28px;
+      border-right: 2px solid #eee;
+    }
+    .test-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: #aaa;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .test-label::after { content: ''; flex: 1; height: 1px; background: #ddd; }
     .test-btns {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 8px;
     }
-
     .test-btn {
       background: var(--blue);
       color: white;
       border: none;
       border-radius: 10px;
-      padding: 10px 4px;
+      padding: 12px 4px;
       font-family: 'Barlow Condensed', sans-serif;
-      font-size: 14px;
+      font-size: 16px;
       font-weight: 700;
       cursor: pointer;
       transition: all 0.15s;
       text-align: center;
-      line-height: 1.2;
     }
-
     .test-btn small {
       display: block;
       font-size: 10px;
       font-weight: 400;
+      font-family: 'Barlow', sans-serif;
       opacity: 0.8;
     }
-
-    .test-btn:hover { background: var(--dark); transform: translateY(-1px); }
+    .test-btn:hover { background: var(--dark); transform: translateY(-2px); }
     .test-btn:active { transform: translateY(0); }
 
-    /* Log */
-    .log-section {
-      background: #1a1a2e;
-      padding: 12px 16px;
-    }
-
+    .log-section { padding: 20px 28px; }
     .log-head {
       display: flex;
       align-items: center;
-      gap: 6px;
-      margin-bottom: 8px;
+      gap: 8px;
+      margin-bottom: 10px;
     }
-
     .log-led {
-      width: 6px; height: 6px;
+      width: 7px; height: 7px;
       border-radius: 50%;
       background: var(--green);
       animation: blink 2s infinite;
     }
-
-    @keyframes blink {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.3; }
-    }
-
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
     .log-head-text {
-      font-size: 10px;
-      font-weight: 600;
-      color: #666;
-      text-transform: uppercase;
-      letter-spacing: 1.5px;
+      font-size: 11px; font-weight: 700;
+      color: #aaa; text-transform: uppercase; letter-spacing: 1.5px;
     }
-
     .log-body {
+      background: #1a1a2e;
+      border-radius: 10px;
+      padding: 10px 14px;
       font-family: 'Courier New', monospace;
       font-size: 11px;
-      height: 90px;
+      height: 80px;
       overflow-y: auto;
-      color: #aaa;
+      color: #888;
       scrollbar-width: thin;
     }
-
     .log-body .ok   { color: #00e676; }
     .log-body .err  { color: #ff5252; }
     .log-body .info { color: #40c4ff; }
 
     /* Footer */
     .footer {
-      background: var(--blue);
-      padding: 10px 20px;
-      text-align: center;
+      background: var(--dark);
+      padding: 10px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .footer-left {
+      font-size: 12px;
+      color: rgba(255,255,255,0.5);
+    }
+    .footer-right {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--yellow);
     }
 
-    .footer-text {
-      font-size: 11px;
-      color: rgba(255,255,255,0.7);
-      font-weight: 500;
+    /* Responsive mobile */
+    @media (max-width: 700px) {
+      .body, .bottom { grid-template-columns: 1fr; }
+      .col-left { border-right: none; border-bottom: 2px solid #f0f0f0; }
+      .test-section { border-right: none; border-bottom: 2px solid #eee; }
+      .main-title { font-size: 28px; }
+      .header { flex-wrap: wrap; }
     }
   </style>
 </head>
 <body>
-<div class="poster">
+<div class="container">
 
   <!-- Top bar -->
   <div class="top-bar">
-    <span class="top-bar-icon">⚡</span>
-    <span class="top-bar-text">HỆ THỐNG THANH TOÁN TỰ ĐỘNG — QUÉT MÃ QR ĐỂ SỬ DỤNG DỊCH VỤ</span>
-  </div>
-
-  <!-- Title -->
-  <div class="title-section">
-    <div class="main-title">SMARTPAY</div>
-    <div class="sub-title">Thanh toán tự động · Không cần nhân viên</div>
-  </div>
-
-  <!-- Status -->
-  <div class="status-section">
-    <div class="status-left">
-      <div class="status-label">Trạng thái thiết bị</div>
-      <div class="status-text" id="statusText">⏸ Chờ thanh toán...</div>
+    <div class="top-bar-left">
+      <span>⚡</span>
+      <span>HỆ THỐNG THANH TOÁN TỰ ĐỘNG — QUÉT MÃ QR ĐỂ SỬ DỤNG DỊCH VỤ</span>
     </div>
-    <div class="status-icon" id="deviceIcon">💡</div>
-    <div class="timer-box" id="timerBox">
-      <div class="timer-num" id="timerNum">--:--</div>
-      <div class="timer-label">Còn lại</div>
-    </div>
+    <div class="top-bar-right">SmartPay v1.0</div>
   </div>
 
-  <!-- QR -->
-  <div class="qr-section">
-    <div class="qr-section-title">📱 Quét mã để thanh toán</div>
-    <div class="qr-main">
-      <div class="qr-img-wrap">
-        <img
-          src="https://img.vietqr.io/image/MSB-96886693013299-compact2.png?accountName=PHAM%20TUAN%20VU"
-          alt="QR Thanh toán"/>
-      </div>
-      <div class="qr-details">
-        <div class="bank-chip">🏦 MSB</div>
-        <div class="acct-number">9688 6693<br>0132 99</div>
-        <div class="acct-holder">Pham Tuan Vu</div>
-        <table class="price-table">
-          <tr>
-            <td class="p-amount">15.000đ</td>
-            <td class="p-arrow">→</td>
-            <td class="p-time">10 phút</td>
-            <td class="p-tag"><span class="tag">Phổ biến</span></td>
-          </tr>
-          <tr>
-            <td class="p-amount">20.000đ</td>
-            <td class="p-arrow">→</td>
-            <td class="p-time">15 phút</td>
-            <td class="p-tag"></td>
-          </tr>
-          <tr>
-            <td class="p-amount">30.000đ</td>
-            <td class="p-arrow">→</td>
-            <td class="p-time">20 phút</td>
-            <td class="p-tag"></td>
-          </tr>
-          <tr>
-            <td class="p-amount">50.000đ</td>
-            <td class="p-arrow">→</td>
-            <td class="p-time">30 phút</td>
-            <td class="p-tag"><span class="tag">Tiết kiệm</span></td>
-          </tr>
-        </table>
+  <!-- Header -->
+  <div class="header">
+    <div class="header-title">
+      <div class="main-title">SMARTPAY</div>
+      <div class="sub-title">Thanh toán tự động · Không cần nhân viên</div>
+    </div>
+    <div class="header-status">
+      <div class="device-icon" id="deviceIcon">💡</div>
+      <div>
+        <div class="status-pill" style="margin-bottom:8px">
+          <div class="s-dot" id="sDot"></div>
+          <span class="s-text" id="sText">Chờ thanh toán</span>
+        </div>
+        <div class="timer-pill" id="timerPill">
+          <div class="timer-num" id="timerNum">--:--</div>
+          <div class="timer-sub">Còn lại</div>
+        </div>
       </div>
     </div>
   </div>
 
-  <!-- Hướng dẫn -->
-  <div class="guide-strip">
-    <span class="guide-icon">⚡</span>
-    <span class="guide-text">Quét mã QR → Chuyển khoản → Đợi vài giây → Thiết bị tự động bật · Hệ thống tự ngắt sau khi hết giờ</span>
+  <!-- Body 2 col -->
+  <div class="body">
+
+    <!-- Left: QR -->
+    <div class="col-left">
+      <div class="col-title">📱 Quét mã để thanh toán</div>
+      <div class="qr-wrap">
+        <div class="qr-img-box">
+          <img src="https://img.vietqr.io/image/MSB-96886693013299-compact2.png?accountName=PHAM%20TUAN%20VU" alt="QR"/>
+        </div>
+        <div class="qr-info">
+          <div class="bank-chip">🏦 MSB</div>
+          <div class="acct-num">9688 6693<br>0132 99</div>
+          <div class="acct-name">Pham Tuan Vu</div>
+          <div class="note-box">
+            Chuyển khoản với <strong>số tiền bất kỳ</strong> — hệ thống tự tính thời gian sử dụng tương ứng.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right: Bảng giá + Steps -->
+    <div class="col-right">
+      <div class="col-title">💰 Bảng giá dịch vụ</div>
+      <table class="price-table">
+        <thead>
+          <tr>
+            <th>Số tiền</th>
+            <th>Thời gian</th>
+            <th>Ghi chú</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="highlight">
+            <td class="td-amount">10.000đ</td>
+            <td class="td-time">10 phút</td>
+            <td class="td-badge"><span class="badge badge-yellow">Phổ biến</span></td>
+          </tr>
+          <tr>
+            <td class="td-amount">20.000đ</td>
+            <td class="td-time">20 phút</td>
+            <td class="td-badge"></td>
+          </tr>
+          <tr>
+            <td class="td-amount">30.000đ</td>
+            <td class="td-time">30 phút</td>
+            <td class="td-badge"></td>
+          </tr>
+          <tr>
+            <td class="td-amount">50.000đ</td>
+            <td class="td-time">50 phút</td>
+            <td class="td-badge"><span class="badge badge-green">Tiết kiệm</span></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="steps-title">📋 Hướng dẫn sử dụng</div>
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-text">Mở app ngân hàng, quét mã QR</div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-text">Nhập số tiền và xác nhận chuyển khoản</div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-text">Đợi vài giây để hệ thống kích hoạt</div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-text">Thiết bị tự động tắt khi hết giờ</div>
+        </div>
+      </div>
+    </div>
+
   </div>
 
-  <!-- Test giả lập -->
-  <div class="test-section">
-    <div class="test-label">Giả lập thanh toán (dev only)</div>
-    <div class="test-btns">
-      <button class="test-btn" onclick="simulate(10000)">10k<small>10 phút</small></button>
-      <button class="test-btn" onclick="simulate(20000)">20k<small>20 phút</small></button>
-      <button class="test-btn" onclick="simulate(30000)">30k<small>30 phút</small></button>
-      <button class="test-btn" onclick="simulate(50000)">50k<small>50 phút</small></button>
-    </div>
+  <!-- Yellow strip -->
+  <div class="yellow-strip">
+    <span class="yellow-strip-icon">⚡</span>
+    <span class="yellow-strip-text">
+      Quét mã QR → Chuyển khoản → Đợi vài giây → Thiết bị tự động bật
+      · Hệ thống tự ngắt điện sau khi hết giờ · Nạp thêm để cộng dồn thời gian
+    </span>
   </div>
 
-  <!-- Log -->
-  <div class="log-section">
-    <div class="log-head">
-      <div class="log-led"></div>
-      <span class="log-head-text">System Log</span>
+  <!-- Bottom: Test + Log -->
+  <div class="bottom">
+    <div class="test-section">
+      <div class="test-label">Giả lập thanh toán (dev only)</div>
+      <div class="test-btns">
+        <button class="test-btn" onclick="simulate(10000)">10k<small>10 phút</small></button>
+        <button class="test-btn" onclick="simulate(20000)">20k<small>20 phút</small></button>
+        <button class="test-btn" onclick="simulate(30000)">30k<small>30 phút</small></button>
+        <button class="test-btn" onclick="simulate(50000)">50k<small>50 phút</small></button>
+      </div>
     </div>
-    <div class="log-body" id="log"></div>
+    <div class="log-section">
+      <div class="log-head">
+        <div class="log-led"></div>
+        <span class="log-head-text">System Log</span>
+      </div>
+      <div class="log-body" id="log"></div>
+    </div>
   </div>
 
   <!-- Footer -->
   <div class="footer">
-    <div class="footer-text">SmartPay v1.0 · Hệ thống thanh toán QR tự động điều khiển thiết bị điện</div>
+    <div class="footer-left">SmartPay · Hệ thống thanh toán QR tự động điều khiển thiết bị điện</div>
+    <div class="footer-right">⚡ Powered by VietQR + Sepay</div>
   </div>
 
 </div>
@@ -531,9 +636,9 @@
     log(`→ Giả lập ${amount.toLocaleString()}đ...`);
     try {
       const res  = await fetch("/webhook/simulate", {
-        method:  "POST",
+        method: "POST",
         headers: { "Content-Type": "application/json" },
-        body:    JSON.stringify({ transferAmount: amount }),
+        body: JSON.stringify({ transferAmount: amount }),
       });
       const data = await res.json();
       if (data.ok) {
@@ -550,26 +655,26 @@
     try {
       const res  = await fetch("/status");
       const data = await res.json();
-
-      const statusText = document.getElementById("statusText");
-      const deviceIcon = document.getElementById("deviceIcon");
-      const timerBox   = document.getElementById("timerBox");
-      const timerNum   = document.getElementById("timerNum");
+      const dot    = document.getElementById("sDot");
+      const sText  = document.getElementById("sText");
+      const icon   = document.getElementById("deviceIcon");
+      const pill   = document.getElementById("timerPill");
+      const num    = document.getElementById("timerNum");
 
       if (data.active) {
-        statusText.className = "status-text on";
-        statusText.textContent = "▶ Thiết bị đang chạy";
-        deviceIcon.className = "status-icon on";
-        timerBox.className = "timer-box on";
+        dot.className  = "s-dot on";
+        sText.textContent = "▶ Đang chạy";
+        icon.className = "device-icon on";
+        pill.className = "timer-pill on";
         const m = Math.floor(data.secondsLeft / 60);
         const s = data.secondsLeft % 60;
-        timerNum.textContent = `${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`;
+        num.textContent = `${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`;
       } else {
-        statusText.className = "status-text";
-        statusText.textContent = "⏸ Chờ thanh toán...";
-        deviceIcon.className = "status-icon";
-        timerBox.className = "timer-box";
-        timerNum.textContent = "--:--";
+        dot.className  = "s-dot";
+        sText.textContent = "Chờ thanh toán";
+        icon.className = "device-icon";
+        pill.className = "timer-pill";
+        num.textContent = "--:--";
       }
     } catch {}
   }, 1000);
