@@ -2,165 +2,521 @@
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
-  <title>QR Relay Demo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SmartPay — Thanh toán tự động</title>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800;900&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
+    :root {
+      --blue:    #0057e7;
+      --blue2:   #0099ff;
+      --yellow:  #ffd600;
+      --red:     #ff3333;
+      --green:   #00c853;
+      --white:   #ffffff;
+      --light:   #e8f4ff;
+      --dark:    #003080;
+    }
+
     * { box-sizing: border-box; margin: 0; padding: 0; }
+
     body {
-      font-family: sans-serif;
-      background: #0f172a;
-      color: #f1f5f9;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      font-family: 'Barlow', sans-serif;
+      background: linear-gradient(160deg, #0057e7 0%, #0099ff 100%);
       min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       padding: 20px;
     }
-    .card {
-      background: #1e293b;
-      border-radius: 16px;
-      padding: 28px;
-      width: 420px;
+
+    .poster {
+      background: white;
+      border-radius: 20px;
+      overflow: hidden;
+      width: 100%;
+      max-width: 480px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    }
+
+    /* ===== TOP HEADER ===== */
+    .top-bar {
+      background: var(--blue);
+      padding: 10px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .top-bar-icon { font-size: 22px; }
+
+    .top-bar-text {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      color: white;
+      letter-spacing: 0.5px;
+      text-align: center;
+      line-height: 1.3;
+    }
+
+    /* ===== TITLE ===== */
+    .title-section {
+      background: linear-gradient(135deg, var(--blue) 0%, var(--blue2) 100%);
+      padding: 16px 20px 14px;
       text-align: center;
     }
-    h2 { margin-bottom: 4px; }
-    .sub { color: #64748b; font-size: 13px; margin-bottom: 20px; }
 
-    /* Trạng thái */
-    .bulb {
-      font-size: 56px;
-      margin-bottom: 6px;
-      filter: grayscale(1) brightness(0.4);
+    .main-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 36px;
+      font-weight: 900;
+      color: white;
+      letter-spacing: 1px;
+      line-height: 1.1;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      margin-bottom: 4px;
+    }
+
+    .sub-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--yellow);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    /* ===== STATUS ===== */
+    .status-section {
+      background: var(--light);
+      border-bottom: 3px solid var(--blue);
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .status-left { flex: 1; }
+
+    .status-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--blue);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 4px;
+    }
+
+    .status-text {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+      color: #666;
+    }
+
+    .status-text.on { color: var(--green); }
+
+    .timer-box {
+      background: var(--blue);
+      border-radius: 12px;
+      padding: 10px 18px;
+      text-align: center;
+      min-width: 110px;
       transition: all 0.4s;
     }
-    .bulb.on { filter: none; }
-    .status { color: #94a3b8; font-size: 14px; margin-bottom: 4px; }
-    .timer {
-      font-size: 44px;
-      font-weight: bold;
-      color: #4ade80;
-      min-height: 54px;
-      margin-bottom: 20px;
+
+    .timer-box.on { background: var(--green); }
+
+    .timer-num {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 38px;
+      font-weight: 900;
+      color: white;
+      letter-spacing: -1px;
+      line-height: 1;
     }
 
-    /* QR tĩnh */
-    .qr-box {
-      background: #0f172a;
-      border-radius: 12px;
-      padding: 16px;
+    .timer-label {
+      font-size: 10px;
+      font-weight: 600;
+      color: rgba(255,255,255,0.8);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .status-icon {
+      font-size: 36px;
+      filter: grayscale(1) opacity(0.3);
+      transition: all 0.4s;
+    }
+
+    .status-icon.on {
+      filter: none;
+      animation: bounce 1s infinite alternate;
+    }
+
+    @keyframes bounce {
+      from { transform: scale(1); }
+      to   { transform: scale(1.1); }
+    }
+
+    /* ===== QR SECTION ===== */
+    .qr-section {
+      padding: 20px;
+      background: white;
+    }
+
+    .qr-section-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--blue);
+      text-align: center;
+      text-transform: uppercase;
+      letter-spacing: 1px;
       margin-bottom: 16px;
     }
-    .qr-img {
-      width: 200px;
-      height: 200px;
-      border-radius: 8px;
-      margin: 0 auto 12px;
-      display: block;
-      background: white;
-      padding: 4px;
+
+    .qr-main {
+      display: flex;
+      gap: 16px;
+      align-items: stretch;
+      margin-bottom: 16px;
     }
-    .qr-bank { font-size: 13px; color: #94a3b8; margin-bottom: 4px; }
-    .qr-acct { font-size: 18px; font-weight: bold; color: #f1f5f9; margin-bottom: 2px; }
-    .qr-name { font-size: 12px; color: #64748b; margin-bottom: 12px; }
+
+    .qr-img-wrap {
+      flex-shrink: 0;
+      background: white;
+      border: 3px solid var(--blue);
+      border-radius: 12px;
+      padding: 6px;
+      width: 150px;
+      height: 150px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .qr-img-wrap img {
+      width: 132px;
+      height: 132px;
+      display: block;
+      border-radius: 4px;
+    }
+
+    .qr-details { flex: 1; }
+
+    .bank-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--blue);
+      color: white;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 20px;
+      margin-bottom: 8px;
+    }
+
+    .acct-number {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--dark);
+      letter-spacing: 2px;
+      margin-bottom: 2px;
+    }
+
+    .acct-holder {
+      font-size: 12px;
+      font-weight: 600;
+      color: #888;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 12px;
+    }
 
     /* Bảng giá */
-    .price-table {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 6px;
-      margin-bottom: 16px;
-    }
-    .price-row {
-      background: #1e3a5f;
-      border-radius: 8px;
-      padding: 8px;
+    .price-table { width: 100%; border-collapse: collapse; }
+
+    .price-table tr:first-child td { border-top: none; }
+
+    .price-table td {
+      padding: 5px 8px;
+      border-top: 1px solid #eee;
       font-size: 13px;
     }
-    .price-row .amount { color: #38bdf8; font-weight: bold; }
-    .price-row .time   { color: #94a3b8; font-size: 11px; }
 
-    /* Test */
-    .test-label { color: #475569; font-size: 11px; margin-bottom: 8px; }
-    .test-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 16px; }
+    .price-table .p-amount {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700;
+      font-size: 15px;
+      color: var(--blue);
+      width: 70px;
+    }
+
+    .price-table .p-arrow { color: #bbb; width: 20px; text-align: center; }
+
+    .price-table .p-time {
+      font-weight: 600;
+      color: var(--dark);
+    }
+
+    .price-table .p-tag {
+      text-align: right;
+    }
+
+    .tag {
+      display: inline-block;
+      background: #e8f4ff;
+      color: var(--blue);
+      font-size: 10px;
+      font-weight: 600;
+      padding: 2px 7px;
+      border-radius: 10px;
+    }
+
+    /* Hướng dẫn */
+    .guide-strip {
+      background: var(--yellow);
+      padding: 10px 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .guide-icon { font-size: 20px; flex-shrink: 0; }
+
+    .guide-text {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--dark);
+      line-height: 1.4;
+    }
+
+    /* Test section */
+    .test-section {
+      background: #f8f9fa;
+      border-top: 2px dashed #ddd;
+      padding: 16px 20px;
+    }
+
+    .test-label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 11px;
+      font-weight: 700;
+      color: #999;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 10px;
+    }
+
+    .test-label::before,
+    .test-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: #ddd;
+    }
+
+    .test-btns {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+    }
+
     .test-btn {
-      background: #7c3aed;
+      background: var(--blue);
       color: white;
       border: none;
-      border-radius: 8px;
-      padding: 10px;
-      font-size: 12px;
-      font-weight: bold;
+      border-radius: 10px;
+      padding: 10px 4px;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
       cursor: pointer;
+      transition: all 0.15s;
+      text-align: center;
+      line-height: 1.2;
     }
-    .test-btn:hover { background: #6d28d9; }
+
+    .test-btn small {
+      display: block;
+      font-size: 10px;
+      font-weight: 400;
+      opacity: 0.8;
+    }
+
+    .test-btn:hover { background: var(--dark); transform: translateY(-1px); }
+    .test-btn:active { transform: translateY(0); }
 
     /* Log */
-    .log-label { color: #475569; font-size: 11px; text-align: left; margin-bottom: 4px; }
-    .log {
-      background: #0f172a;
-      border-radius: 8px;
-      padding: 10px;
-      text-align: left;
-      font-family: monospace;
-      font-size: 12px;
-      height: 110px;
-      overflow-y: auto;
-      color: #94a3b8;
+    .log-section {
+      background: #1a1a2e;
+      padding: 12px 16px;
     }
-    .log .ok   { color: #4ade80; }
-    .log .err  { color: #f87171; }
-    .log .info { color: #38bdf8; }
+
+    .log-head {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 8px;
+    }
+
+    .log-led {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--green);
+      animation: blink 2s infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+
+    .log-head-text {
+      font-size: 10px;
+      font-weight: 600;
+      color: #666;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+    }
+
+    .log-body {
+      font-family: 'Courier New', monospace;
+      font-size: 11px;
+      height: 90px;
+      overflow-y: auto;
+      color: #aaa;
+      scrollbar-width: thin;
+    }
+
+    .log-body .ok   { color: #00e676; }
+    .log-body .err  { color: #ff5252; }
+    .log-body .info { color: #40c4ff; }
+
+    /* Footer */
+    .footer {
+      background: var(--blue);
+      padding: 10px 20px;
+      text-align: center;
+    }
+
+    .footer-text {
+      font-size: 11px;
+      color: rgba(255,255,255,0.7);
+      font-weight: 500;
+    }
   </style>
 </head>
 <body>
-<div class="card">
-  <h2>⚡ QR Relay Demo</h2>
-  <p class="sub">Quét QR → chuyển khoản → thiết bị tự bật</p>
+<div class="poster">
 
-  <div class="bulb" id="bulb">💡</div>
-  <div class="status" id="status">Chờ thanh toán...</div>
-  <div class="timer" id="timer"></div>
+  <!-- Top bar -->
+  <div class="top-bar">
+    <span class="top-bar-icon">⚡</span>
+    <span class="top-bar-text">HỆ THỐNG THANH TOÁN TỰ ĐỘNG — QUÉT MÃ QR ĐỂ SỬ DỤNG DỊCH VỤ</span>
+  </div>
 
-  <!-- QR tĩnh -->
-  <div class="qr-box">
-    <img class="qr-img"
-      src="https://img.vietqr.io/image/MSB-96886693013299-compact2.png?accountName=PHAM%20TUAN%20VU"
-      alt="QR Thanh toán"/>
-    <div class="qr-bank">🏦 MSB</div>
-    <div class="qr-acct">96886693013299</div>
-    <div class="qr-name">PHAM TUAN VU</div>
+  <!-- Title -->
+  <div class="title-section">
+    <div class="main-title">SMARTPAY</div>
+    <div class="sub-title">Thanh toán tự động · Không cần nhân viên</div>
+  </div>
 
-    <!-- Bảng giá -->
-    <div class="price-table">
-      <div class="price-row">
-        <div class="amount">10.000đ</div>
-        <div class="time">⏱ 10 phút</div>
+  <!-- Status -->
+  <div class="status-section">
+    <div class="status-left">
+      <div class="status-label">Trạng thái thiết bị</div>
+      <div class="status-text" id="statusText">⏸ Chờ thanh toán...</div>
+    </div>
+    <div class="status-icon" id="deviceIcon">💡</div>
+    <div class="timer-box" id="timerBox">
+      <div class="timer-num" id="timerNum">--:--</div>
+      <div class="timer-label">Còn lại</div>
+    </div>
+  </div>
+
+  <!-- QR -->
+  <div class="qr-section">
+    <div class="qr-section-title">📱 Quét mã để thanh toán</div>
+    <div class="qr-main">
+      <div class="qr-img-wrap">
+        <img
+          src="https://img.vietqr.io/image/MSB-96886693013299-compact2.png?accountName=PHAM%20TUAN%20VU"
+          alt="QR Thanh toán"/>
       </div>
-      <div class="price-row">
-        <div class="amount">20.000đ</div>
-        <div class="time">⏱ 20 phút</div>
-      </div>
-      <div class="price-row">
-        <div class="amount">30.000đ</div>
-        <div class="time">⏱ 30 phút</div>
-      </div>
-      <div class="price-row">
-        <div class="amount">50.000đ</div>
-        <div class="time">⏱ 50 phút</div>
+      <div class="qr-details">
+        <div class="bank-chip">🏦 MSB</div>
+        <div class="acct-number">9688 6693<br>0132 99</div>
+        <div class="acct-holder">Pham Tuan Vu</div>
+        <table class="price-table">
+          <tr>
+            <td class="p-amount">15.000đ</td>
+            <td class="p-arrow">→</td>
+            <td class="p-time">10 phút</td>
+            <td class="p-tag"><span class="tag">Phổ biến</span></td>
+          </tr>
+          <tr>
+            <td class="p-amount">20.000đ</td>
+            <td class="p-arrow">→</td>
+            <td class="p-time">15 phút</td>
+            <td class="p-tag"></td>
+          </tr>
+          <tr>
+            <td class="p-amount">30.000đ</td>
+            <td class="p-arrow">→</td>
+            <td class="p-time">20 phút</td>
+            <td class="p-tag"></td>
+          </tr>
+          <tr>
+            <td class="p-amount">50.000đ</td>
+            <td class="p-arrow">→</td>
+            <td class="p-time">30 phút</td>
+            <td class="p-tag"><span class="tag">Tiết kiệm</span></td>
+          </tr>
+        </table>
       </div>
     </div>
   </div>
 
-  <!-- Test giả lập -->
-  <div class="test-label">🧪 Giả lập thanh toán (chỉ dùng để test)</div>
-  <div class="test-btns">
-    <button class="test-btn" onclick="simulate(10000)">10.000đ</button>
-    <button class="test-btn" onclick="simulate(20000)">20.000đ</button>
-    <button class="test-btn" onclick="simulate(30000)">30.000đ</button>
-    <button class="test-btn" onclick="simulate(50000)">50.000đ</button>
+  <!-- Hướng dẫn -->
+  <div class="guide-strip">
+    <span class="guide-icon">⚡</span>
+    <span class="guide-text">Quét mã QR → Chuyển khoản → Đợi vài giây → Thiết bị tự động bật · Hệ thống tự ngắt sau khi hết giờ</span>
   </div>
 
-  <div class="log-label">📋 LOG</div>
-  <div class="log" id="log"></div>
+  <!-- Test giả lập -->
+  <div class="test-section">
+    <div class="test-label">Giả lập thanh toán (dev only)</div>
+    <div class="test-btns">
+      <button class="test-btn" onclick="simulate(10000)">10k<small>10 phút</small></button>
+      <button class="test-btn" onclick="simulate(20000)">20k<small>20 phút</small></button>
+      <button class="test-btn" onclick="simulate(30000)">30k<small>30 phút</small></button>
+      <button class="test-btn" onclick="simulate(50000)">50k<small>50 phút</small></button>
+    </div>
+  </div>
+
+  <!-- Log -->
+  <div class="log-section">
+    <div class="log-head">
+      <div class="log-led"></div>
+      <span class="log-head-text">System Log</span>
+    </div>
+    <div class="log-body" id="log"></div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <div class="footer-text">SmartPay v1.0 · Hệ thống thanh toán QR tự động điều khiển thiết bị điện</div>
+  </div>
+
 </div>
 
 <script>
@@ -172,7 +528,7 @@
   }
 
   async function simulate(amount) {
-    log(`💰 Giả lập ${amount.toLocaleString()}đ...`);
+    log(`→ Giả lập ${amount.toLocaleString()}đ...`);
     try {
       const res  = await fetch("/webhook/simulate", {
         method:  "POST",
@@ -181,12 +537,12 @@
       });
       const data = await res.json();
       if (data.ok) {
-        log(`✅ Relay BẬT! Còn ${data.totalLeft} phút`, "ok");
+        log(`✓ Relay BẬT! Còn ${data.totalLeft} phút`, "ok");
       } else {
-        log(`❌ ${data.message || JSON.stringify(data)}`, "err");
+        log(`✗ ${data.message || JSON.stringify(data)}`, "err");
       }
     } catch {
-      log("❌ Không kết nối được server", "err");
+      log("✗ Không kết nối được server", "err");
     }
   }
 
@@ -194,23 +550,31 @@
     try {
       const res  = await fetch("/status");
       const data = await res.json();
-      const bulb   = document.getElementById("bulb");
-      const status = document.getElementById("status");
-      const timer  = document.getElementById("timer");
+
+      const statusText = document.getElementById("statusText");
+      const deviceIcon = document.getElementById("deviceIcon");
+      const timerBox   = document.getElementById("timerBox");
+      const timerNum   = document.getElementById("timerNum");
 
       if (data.active) {
-        bulb.className = "bulb on";
-        status.textContent = "🟢 Thiết bị đang chạy";
+        statusText.className = "status-text on";
+        statusText.textContent = "▶ Thiết bị đang chạy";
+        deviceIcon.className = "status-icon on";
+        timerBox.className = "timer-box on";
         const m = Math.floor(data.secondsLeft / 60);
         const s = data.secondsLeft % 60;
-        timer.textContent = `${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`;
+        timerNum.textContent = `${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`;
       } else {
-        bulb.className = "bulb";
-        status.textContent = "Chờ thanh toán...";
-        timer.textContent  = "";
+        statusText.className = "status-text";
+        statusText.textContent = "⏸ Chờ thanh toán...";
+        deviceIcon.className = "status-icon";
+        timerBox.className = "timer-box";
+        timerNum.textContent = "--:--";
       }
     } catch {}
   }, 1000);
+
+  log("Hệ thống sẵn sàng", "ok");
 </script>
 </body>
 </html>
